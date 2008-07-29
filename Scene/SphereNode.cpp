@@ -39,27 +39,29 @@ void SphereNode::Apply(IRenderingView* rv) {
     
     float col[4];
     m->diffuse.ToArray(col);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, col);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, col);
     
     m->ambient.ToArray(col);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, col);
+    glMaterialfv(GL_FRONT, GL_AMBIENT, col);
     
     m->specular.ToArray(col);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, col);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, col);
     
     m->emission.ToArray(col);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, col);
+    glMaterialfv(GL_FRONT, GL_EMISSION, col);
         
-    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, m->shininess);
+    glMaterialf(GL_FRONT, GL_SHININESS, m->shininess);
 
 
 
     GLUquadricObj* qobj = gluNewQuadric();
     
     gluQuadricNormals(qobj, GLU_SMOOTH);
-    gluQuadricDrawStyle(qobj,GLU_FILL);
+    gluQuadricDrawStyle(qobj, GLU_SILHOUETTE);
+    gluQuadricOrientation(qobj, GLU_OUTSIDE);
+//     gluQuadricDrawStyle(qobj, GLU_LINE);
     gluSphere(qobj, 1.0, slices, stacks);
-    
+//     gluCylinder(qobj, 10, 0,30, 30,30);    
     gluDeleteQuadric(qobj);
     
 }
