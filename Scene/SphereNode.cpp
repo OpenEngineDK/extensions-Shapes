@@ -35,8 +35,10 @@ SphereNode::~SphereNode() {
 }
 
 void SphereNode::Apply(IRenderingView* rv) {
-    glDisable(GL_COLOR_MATERIAL);
-    
+//     logger.info << "sphere apply" << logger.end;
+//    glEnable(GL_BLEND);
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //glEnable(GL_AUTO_NORMAL);
     float col[4];
     m->diffuse.ToArray(col);
     glMaterialfv(GL_FRONT, GL_DIFFUSE, col);
@@ -49,21 +51,25 @@ void SphereNode::Apply(IRenderingView* rv) {
     
     m->emission.ToArray(col);
     glMaterialfv(GL_FRONT, GL_EMISSION, col);
-        
     glMaterialf(GL_FRONT, GL_SHININESS, m->shininess);
 
-
+    bool norm = glIsEnabled(GL_NORMALIZE);
+    glEnable(GL_NORMALIZE);
 
     GLUquadricObj* qobj = gluNewQuadric();
-    
+    glLineWidth(2);
     gluQuadricNormals(qobj, GLU_SMOOTH);
-    gluQuadricDrawStyle(qobj, GLU_SILHOUETTE);
-    gluQuadricOrientation(qobj, GLU_OUTSIDE);
-//     gluQuadricDrawStyle(qobj, GLU_LINE);
+    //gluQuadricDrawStyle(qobj, GLU_SILHOUETTE);
+    gluQuadricDrawStyle(qobj, GLU_LINE);
+    //gluQuadricDrawStyle(qobj, GLU_FILL);
+    gluQuadricOrientation(qobj, GLU_INSIDE);
     gluSphere(qobj, 1.0, slices, stacks);
-//     gluCylinder(qobj, 10, 0,30, 30,30);    
     gluDeleteQuadric(qobj);
-    
+
+    if (!norm) {
+        glDisable(GL_NORMALIZE);
+    }
+    //glDisable(GL_BLEND);
 }
 
 } //NS Scene
