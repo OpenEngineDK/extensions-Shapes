@@ -7,14 +7,10 @@
 // See the GNU General Public License for more details (see LICENSE). 
 //--------------------------------------------------------------------
 
-#ifndef _SPHERE_NODE_H_
-#define _SPHERE_NODE_H_
+#ifndef _OE_SPHERE_NODE_H_
+#define _OE_SPHERE_NODE_H_
 
-
-#include <boost/serialization/base_object.hpp>
-#include <boost/serialization/export.hpp>
-
-#include <Renderers/IRenderNode.h>
+#include <Scene/RenderNode.h>
 
 namespace OpenEngine {
     //forward declarations
@@ -24,7 +20,6 @@ namespace OpenEngine {
 
 namespace Scene {
 
-using OpenEngine::Renderers::IRenderNode;
 using OpenEngine::Renderers::IRenderingView;
 using OpenEngine::Geometry::MaterialPtr;
 
@@ -35,14 +30,14 @@ using OpenEngine::Geometry::MaterialPtr;
  *
  * @class SphereNode SphereNode.h Scene/SphereNode.h
  */
-class SphereNode : public IRenderNode {
+class SphereNode : public RenderNode {
 private:
     friend class boost::serialization::access;
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version)
     {
         // serialize base class information
-        ar & boost::serialization::base_object<IRenderNode>(*this);
+        ar & boost::serialization::base_object<RenderNode>(*this);
     }
 
     
