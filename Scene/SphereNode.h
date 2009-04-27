@@ -11,11 +11,15 @@
 #define _OE_SPHERE_NODE_H_
 
 #include <Scene/RenderNode.h>
+#include <Geometry/Sphere.h>
 
 namespace OpenEngine {
     //forward declarations
     namespace Renderers {
         class IRenderingView;
+    }
+    namespace Geometry {
+        class Sphere;
     }
 
 namespace Scene {
@@ -42,11 +46,11 @@ private:
 
     
     MaterialPtr m;
-    int slices, stacks;
+    Geometry::Sphere sphere;
 public:
     
     SphereNode();
-    SphereNode(MaterialPtr m, int slices, int stacks);
+    SphereNode(MaterialPtr m);
     virtual ~SphereNode();
 
     void Apply(IRenderingView* rv);

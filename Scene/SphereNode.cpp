@@ -12,64 +12,29 @@
 #include <Logging/Logger.h>
 #include <Meta/OpenGL.h>
 #include <Geometry/Material.h>
+#include <Geometry/Sphere.h>
+#include <Math/Vector.h>
 
 namespace OpenEngine {
 namespace Scene {
 
 using OpenEngine::Geometry::Material;
 
-SphereNode::SphereNode() {
+SphereNode::SphereNode() : sphere(Geometry::Sphere(2)) {
     m = MaterialPtr(new Material());
-    slices = 30;
-    stacks = 30;
 }
 
-SphereNode::SphereNode(MaterialPtr m, int slices, int stacks): m(m), 
-                                                               slices(slices), 
-                                                               stacks(stacks) {
-    
-}
+SphereNode::SphereNode(MaterialPtr m)
+    : m(m), sphere(Geometry::Sphere(2)) {}
 
 SphereNode::~SphereNode() {
 
 }
 
 void SphereNode::Apply(IRenderingView* rv) {
-//     logger.info << "sphere apply" << logger.end;
-//    glEnable(GL_BLEND);
-//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    //glEnable(GL_AUTO_NORMAL);
-    float col[4];
-    m->diffuse.ToArray(col);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, col);
-    
-    m->ambient.ToArray(col);
-    glMaterialfv(GL_FRONT, GL_AMBIENT, col);
-    
-    m->specular.ToArray(col);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, col);
-    
-    m->emission.ToArray(col);
-    glMaterialfv(GL_FRONT, GL_EMISSION, col);
-    glMaterialf(GL_FRONT, GL_SHININESS, m->shininess);
-
-    bool norm = glIsEnabled(GL_NORMALIZE);
-    glEnable(GL_NORMALIZE);
-
-    GLUquadricObj* qobj = gluNewQuadric();
-    glLineWidth(2);
-    gluQuadricNormals(qobj, GLU_SMOOTH);
-    //gluQuadricDrawStyle(qobj, GLU_SILHOUETTE);
-    gluQuadricDrawStyle(qobj, GLU_LINE);
-    //gluQuadricDrawStyle(qobj, GLU_FILL);
-    gluQuadricOrientation(qobj, GLU_INSIDE);
-    gluSphere(qobj, 1.0, slices, stacks);
-    gluDeleteQuadric(qobj);
-
-    if (!norm) {
-        glDisable(GL_NORMALIZE);
-    }
-    //glDisable(GL_BLEND);
+    rv->GetRenderer()->DrawSphere(sphere.GetCenter(),
+                                  sphere.GetRadius(),
+                                  Math::Vector<3,float>(1.0f));
 }
 
 } //NS Scene
