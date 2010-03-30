@@ -36,13 +36,6 @@ using OpenEngine::Geometry::MaterialPtr;
  */
 class SphereNode : public RenderNode {
 private:
-    friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version)
-    {
-        // serialize base class information
-        ar & boost::serialization::base_object<RenderNode>(*this);
-    }
 
     
     MaterialPtr m;
@@ -59,7 +52,6 @@ public:
 } // NS Scene
 } // NS OpenEngine
 
-BOOST_CLASS_EXPORT(OpenEngine::Scene::SphereNode)
 
 
 #endif // _SPHERE_NODE_H_
